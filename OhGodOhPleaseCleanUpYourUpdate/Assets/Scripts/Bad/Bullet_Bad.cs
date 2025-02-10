@@ -20,13 +20,18 @@ public class Bullet_Bad : MonoBehaviour
     private bool HasCollided = false;
     public void SetUpBullet(Player_Bad playerRef, Vector3 ShootVector)
     {
+        Debug.Log("1");
         player = playerRef;
         MovementVector = ShootVector;
+        Debug.Log("2");
     }
 
     private void Update()
     {
+        Debug.Log("3");
         transform.position += (Time.deltaTime * Speed) * MovementVector;
+        Debug.Log("4");
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -34,6 +39,7 @@ public class Bullet_Bad : MonoBehaviour
 
         if (!HasCollided)
         {
+            Debug.Log(collision.gameObject.tag);
             if (collision.gameObject.CompareTag(EnemyTag))
             {
                 player.OnBulletHitOrBlock(true);
@@ -49,4 +55,5 @@ public class Bullet_Bad : MonoBehaviour
         }
 
     }
+
 }

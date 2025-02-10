@@ -16,11 +16,7 @@ public class Player_Bad : MonoBehaviour
 
     void Start()
     {
-        //BulletCount = MaxBullets;
-        for (int i = BulletCount; i < MaxBullets; i++) //realistic reloading, 1 at a time
-        {
-            BulletCount = BulletCount + 1;
-        }
+        BulletCount = MaxBullets;
         float BulletPercent = BulletCount / (float)MaxBullets;
         OnPlayerShoot?.Invoke(BulletPercent);
     }
@@ -28,15 +24,17 @@ public class Player_Bad : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        float startTime = Time.time; // DO NOT EDIT
+
         var mousePosition = Input.mousePosition;
         mousePosition.x -= Screen.width / 2;
 
         var mouseRotation = (mousePosition - gameObject.transform.position).normalized;
 
         bool canShoot;
-        BulletCount = BulletCount - 1;
-        if (BulletCount >= -1)
+        if (BulletCount >= 1)
         {
+            BulletCount = BulletCount - 1; // shoot it now so i dont have to later
             Debug.Log("Can shoot!" + " " + "My bullets after shooting =" + (BulletCount + 1));
             canShoot = true;
         }
@@ -55,17 +53,18 @@ public class Player_Bad : MonoBehaviour
                 float BulletPercent = BulletCount / (float)MaxBullets;
                 OnPlayerShoot?.Invoke(BulletPercent);
                 Bullet_Bad b = Instantiate(Bullet, transform.position, Quaternion.identity).GetComponent<Bullet_Bad>();
-                b.SetUpBullet(this, mousePosition);
+                b.SetUpBullet(this, mouseRotation);
             }
-        }
-        else
-        {
-            BulletCount = BulletCount + 1;
+            else
+            {
+                BulletCount = BulletCount + 1;
+            }
         }
         var isRKeyNotPressed = !Input.GetKeyDown(KeyCode.R);
         if(isRKeyNotPressed != true) 
         {
-            for (int i = BulletCount; i < MaxBullets; i++) //realistic reloading, 1 at a time
+            BulletCount = 0; //realistic reloading, 1 at a time
+            for (int i = BulletCount; i < MaxBullets; i++) 
             {
                 BulletCount = BulletCount + 1;
             }
@@ -73,6 +72,8 @@ public class Player_Bad : MonoBehaviour
             OnPlayerShoot?.Invoke(BulletPercent);
         }
         // ^ this code make it reloads
-        
+
+        Debug.Log(Time.time - startTime); // DO NOT EDIT
     } 
+
 }
