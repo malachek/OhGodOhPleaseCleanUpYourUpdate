@@ -35,7 +35,7 @@ public class Player_Good : MonoBehaviour
     private void Shoot()
     {
         // object pool????
-        if (BulletCount <= 0) return;
+        if (BulletCount <= 0.1f) return;
         
         Vector3 mouseRotation = GetMouseRotation();
         OnPlayerShoot?.Invoke((float)--BulletCount / MaxBullets); //cleaner and safer to float the numerator than denominator
