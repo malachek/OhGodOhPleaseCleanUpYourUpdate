@@ -22,8 +22,6 @@ public class Player_Bad : MonoBehaviour
 
     void Update()
     {
-        float startTime = Time.time; // [DO_NOT_EDIT]
-
         var mousePosition = Input.mousePosition;
         mousePosition.x -= Screen.width / 2; // [insight] mousePosition origin is bottom left, so this puts it in the middle
 
@@ -70,7 +68,15 @@ public class Player_Bad : MonoBehaviour
         }
         // ^ this code make it reloads
 
-        Debug.Log(Time.time - startTime); // [DO_NOT_EDIT]
+
+        // i really wanna see howm many bullets exist at once. that would be so cool
+        Bullet_Bad[] bullets = Object.FindObjectsOfType<Bullet_Bad>();
+        int j = 0;
+        foreach (Bullet_Bad bullet in bullets)
+        {
+            j ++;
+        }
+        Debug.Log("There are " + j + " bullets");
     } 
 
 

@@ -23,9 +23,7 @@ public class Player_Good : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float startTime = Time.time; // DO NOT EDIT
         HandleInput();
-        Debug.Log(Time.time - startTime); // DO NOT EDIT
     }
 
     private void HandleInput()

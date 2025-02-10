@@ -2,19 +2,13 @@ using UnityEngine;
 
 public class Bullet_Bad : MonoBehaviour
 {
-    [SerializeField]
-    private CircleCollider2D Collider;
+    public CircleCollider2D Collider;
     private Vector3 MovementVector;
+    public float Speed;
+    public string EnemyTag = "Enemy";
+    public string BlockTag = "Blocker";
+    public bool HasCollided = false;
 
-    [SerializeField]
-    private float Speed;
-
-    [SerializeField]
-    private string EnemyTag = "Enemy";
-    [SerializeField]
-    private string BlockTag = "Blocker";
-
-    private bool HasCollided = false;
     public void SetUpBullet(Vector3 ShootVector)
     {
         MovementVector = ShootVector;
@@ -22,12 +16,11 @@ public class Bullet_Bad : MonoBehaviour
 
     private void Update()
     {
-        Vector3 newPosition = Vector3.zero; //initialize new Vector3
-
+        Vector3 newPosition = new Vector3(0, 0, 0); //initialize new Vector3
         newPosition.x = (Time.deltaTime * Speed) * MovementVector.x;
         newPosition.y = (Time.deltaTime * Speed) * MovementVector.y;
-
-        transform.position = transform.position + newPosition;
+        newPosition.z = 0f; // because floats are cool
+        this.transform.position = this.transform.position + newPosition;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
