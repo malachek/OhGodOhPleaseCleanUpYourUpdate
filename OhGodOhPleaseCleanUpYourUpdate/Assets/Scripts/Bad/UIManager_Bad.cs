@@ -4,68 +4,35 @@ using UnityEngine.UI;
 
 public class UIManager_Bad : MonoBehaviour
 {
-    [SerializeField]
-    private Slider AmmoSlider;
-
-    [SerializeField]
-    private TextMeshProUGUI KillCountDisplay;
-
-    [SerializeField]
-    private TextMeshProUGUI BlockedCountDisplay;
-
-    private int Kills = 0;
-
-    private int BlockedShots = 0;
-
-    Player_Bad player;
+    public Slider AmmoSlider;
+    public TextMeshProUGUI KillCountDisplay;
+    public TextMeshProUGUI BlockedCountDisplay;
 
     private void Awake()
     {
-        player = FindFirstObjectByType<Player_Bad>();
-
-        //Subscribes to event for ammo
-        player.OnPlayerShoot += UpdateAmmoCount;
-        //Subcribes to event for kill
-        player.OnBulletHitOrBlock += DetermineCountIncrease;
-
+        // [hint] Subscribe? <- ask us what this means
     }
 
     private void Start()
     {
-        Kills = 0;
         AmmoSlider.value = 1;
-        KillCountDisplay.text = $"Enemies Killed: {Kills}";
-        BlockedCountDisplay.text = $"Blocked Shots: {BlockedShots}";
+        Player_Bad player = GameObject.FindFirstObjectByType<Player_Bad>();
+        KillCountDisplay.text = "Enemies Killed: " + player.Kills + ".";
+        BlockedCountDisplay.text = "Blocked Shots: " + player.Blocks + ".";
+    }
+
+    private void Update()
+    {
+        Player_Bad player = GameObject.FindFirstObjectByType<Player_Bad>();
+        AmmoSlider.value = (float)player.BulletCount / player.MaxBullets;
+        KillCountDisplay.text = "Enemies Killed: " + player.Kills + ".";
+        BlockedCountDisplay.text = "Blocked Shots: " + player.Blocks + ".";
     }
 
     private void OnDestroy()
     {
-
-        //Unsubscribes to event for ammo
-        player.OnPlayerShoot -= UpdateAmmoCount;
-        //Unsubcribes to event for kill
-        player.OnBulletHitOrBlock -= DetermineCountIncrease;
+        // [hint] Do I need to unsubscribe if i unsubscribe
+        // [hint] Wait who calls me...
     }
 
-    private void UpdateAmmoCount(float AmmoPercent)
-    {
-        AmmoSlider.value = AmmoPercent;
-    }
-
-    private void DetermineCountIncrease(bool IsHit)
-    {
-        if (IsHit) { IncreaseKillCount(); } else { BlockedShot(); }
-    }
-
-    private void IncreaseKillCount()
-    {
-        Kills++;
-        KillCountDisplay.text = $"Enemies Killed: {Kills}";
-    }
-
-    private void BlockedShot()
-    {
-        BlockedShots++;
-        BlockedCountDisplay.text = $"Blocked Shots: {BlockedShots}";
-    }
 }

@@ -165,7 +165,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c84decac4f635a84586492fe7b6e67ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Collider: {fileID: 0}
-  Speed: 5
-  EnemyTag: Enemy
-  BlockTag: Blocker
+  speed: 5
+  enemyTag: Enemy
+  blockTag: Blocker

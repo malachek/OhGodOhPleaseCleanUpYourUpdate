@@ -2,51 +2,42 @@ using UnityEngine;
 
 public class Bullet_Good : MonoBehaviour
 {
-    [SerializeField]
-    private CircleCollider2D Collider;
-
     private Player_Good player;
-
-    private Vector3 MovementVector;
-
-    [SerializeField]
-    private float Speed;
-
-    [SerializeField]
-    private string EnemyTag = "Enemy";
-    [SerializeField]
-    private string BlockTag = "Blocker";
-
+    private Vector3 movementVector;
     private bool HasCollided = false;
-    public void SetUpBullet(Player_Good playerRef, Vector3 ShootVector)
+
+    [SerializeField] private float speed;
+
+    [SerializeField] private string enemyTag = "Enemy";
+    [SerializeField] private string blockTag = "Blocker";
+
+    public void SetUpBullet(Player_Good playerRef, Vector3 shootVector)
     {
         player = playerRef;
-        MovementVector = ShootVector;
+        movementVector = speed * shootVector;
     }
 
     private void Update()
     {
-        transform.position += (Time.deltaTime * Speed) * MovementVector;
+        transform.position += Time.deltaTime * movementVector;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-
-        if (!HasCollided)
+        if(HasCollided) return;
+        
+        if (collision.gameObject.CompareTag(enemyTag))
         {
-            if (collision.gameObject.CompareTag(EnemyTag))
-            {
-                player.OnBulletHitOrBlock(true);
-                Destroy(collision.transform.parent.gameObject);
-                Destroy(gameObject);
-            }
-            else if (collision.gameObject.CompareTag(BlockTag))
-            {
-                player.OnBulletHitOrBlock(false);
-                Destroy(gameObject);
-            }
-            HasCollided = true;
+            player.OnBulletHitOrBlock(true);
+            Destroy(collision.transform.parent.gameObject);
+            Destroy(gameObject);
         }
+        else if (collision.gameObject.CompareTag(blockTag))
+        {
+            player.OnBulletHitOrBlock(false);
+            Destroy(gameObject);
+        }
+        HasCollided = true;
 
     }
 }

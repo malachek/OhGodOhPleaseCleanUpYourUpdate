@@ -4,9 +4,6 @@ public class Bullet_Bad : MonoBehaviour
 {
     [SerializeField]
     private CircleCollider2D Collider;
-
-    private Player_Bad player;
-
     private Vector3 MovementVector;
 
     [SerializeField]
@@ -18,37 +15,43 @@ public class Bullet_Bad : MonoBehaviour
     private string BlockTag = "Blocker";
 
     private bool HasCollided = false;
-    public void SetUpBullet(Player_Bad playerRef, Vector3 ShootVector)
+    public void SetUpBullet(Vector3 ShootVector)
     {
-        Debug.Log("1");
-        player = playerRef;
         MovementVector = ShootVector;
-        Debug.Log("2");
     }
 
     private void Update()
     {
-        Debug.Log("3");
-        transform.position += (Time.deltaTime * Speed) * MovementVector;
-        Debug.Log("4");
+        Vector3 newPosition = Vector3.zero; //initialize new Vector3
 
+        newPosition.x = (Time.deltaTime * Speed) * MovementVector.x;
+        newPosition.y = (Time.deltaTime * Speed) * MovementVector.y;
+
+        transform.position = transform.position + newPosition;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-
         if (!HasCollided)
         {
-            Debug.Log(collision.gameObject.tag);
-            if (collision.gameObject.CompareTag(EnemyTag))
+            string colTag = collision.gameObject.tag;
+            if (colTag.Equals(EnemyTag))
             {
-                player.OnBulletHitOrBlock(true);
+                Player_Bad player = GameObject.FindFirstObjectByType<Player_Bad>();// [hint] if only theres a way to give it a reference in O(1) time...
+                if(player != null)
+                {
+                    player.GotKill(); 
+                }
                 Destroy(collision.transform.parent.gameObject);
                 Destroy(gameObject);
             }
-            else if (collision.gameObject.CompareTag(BlockTag))
+            else if (colTag.Equals(BlockTag))
             {
-                player.OnBulletHitOrBlock(false);
+                Player_Bad player = GameObject.FindFirstObjectByType<Player_Bad>();// [hint] if only theres a way to give it a reference in O(1) time...
+                if(player != null)
+                {
+                    player.GotKill(); 
+                }                
                 Destroy(gameObject);
             }
             HasCollided = true;

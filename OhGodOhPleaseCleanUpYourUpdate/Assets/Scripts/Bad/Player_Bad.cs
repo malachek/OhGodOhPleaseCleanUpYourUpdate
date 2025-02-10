@@ -1,35 +1,33 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class Player_Bad : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    [SerializeField] private int MaxBullets = 5;
-    private int BulletCount;
+    public int MaxBullets = 5;
+    public int BulletCount;
 
-    [SerializeField] private GameObject Bullet;
-
-    public delegate void PlayerShoot(float CurrentAmmoPercent);
-    public PlayerShoot OnPlayerShoot;
-
-    public delegate void BulletHitOrBlock(bool IsHit);
-    public BulletHitOrBlock OnBulletHitOrBlock;
+    public GameObject Bullet;
+    public int Kills;
+    public int Blocks;
 
     void Start()
     {
+        Kills = 0;
+        Blocks = 0;
         BulletCount = MaxBullets;
-        float BulletPercent = BulletCount / (float)MaxBullets;
-        OnPlayerShoot?.Invoke(BulletPercent);
+        // [hint] maybe something about UIManager_Bad goes here
+        // [hint] maybe an event call idk
     }
 
-    // Update is called once per frame
     void Update()
     {
-        float startTime = Time.time; // DO NOT EDIT
+        float startTime = Time.time; // [DO_NOT_EDIT]
 
         var mousePosition = Input.mousePosition;
-        mousePosition.x -= Screen.width / 2;
+        mousePosition.x -= Screen.width / 2; // [insight] mousePosition origin is bottom left, so this puts it in the middle
 
-        var mouseRotation = (mousePosition - gameObject.transform.position).normalized;
+        var mouseVector = (mousePosition - gameObject.transform.position).normalized;
 
         bool canShoot;
         if (BulletCount >= 1)
@@ -50,30 +48,39 @@ public class Player_Bad : MonoBehaviour
             // shooting code
             if (isKKeyPressed == true)
             {
-                float BulletPercent = BulletCount / (float)MaxBullets;
-                OnPlayerShoot?.Invoke(BulletPercent);
+                // [insight] instantiate prefab
                 Bullet_Bad b = Instantiate(Bullet, transform.position, Quaternion.identity).GetComponent<Bullet_Bad>();
-                b.SetUpBullet(this, mouseRotation);
+                // [insight] give it "default values"
+                b.SetUpBullet(mouseVector);
             }
             else
             {
-                BulletCount = BulletCount + 1;
+                BulletCount = BulletCount + 1; // get the bullet back, just in case i dont actually shoot it
             }
         }
         var isRKeyNotPressed = !Input.GetKeyDown(KeyCode.R);
         if(isRKeyNotPressed != true) 
         {
-            BulletCount = 0; //realistic reloading, 1 at a time
-            for (int i = BulletCount; i < MaxBullets; i++) 
+            //realistic loading
+            BulletCount = 0; //empty the mag
+            for (int i = BulletCount; i < MaxBullets; i++) //fill it up, one at a time
             {
                 BulletCount = BulletCount + 1;
             }
-            float BulletPercent = BulletCount / (float)MaxBullets;
-            OnPlayerShoot?.Invoke(BulletPercent);
         }
         // ^ this code make it reloads
 
-        Debug.Log(Time.time - startTime); // DO NOT EDIT
+        Debug.Log(Time.time - startTime); // [DO_NOT_EDIT]
     } 
 
+
+    public void GotKill()
+    {
+        Kills++;
+    }
+
+    public void GotBlocked()
+    {
+        Blocks++;
+    }
 }
