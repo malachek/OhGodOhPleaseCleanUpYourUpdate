@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyLogic : MonoBehaviour
+public class EnemyLogic_Good : MonoBehaviour
 {
     [SerializeField]
     private Vector3 Direction = new Vector3(-1,0,0);

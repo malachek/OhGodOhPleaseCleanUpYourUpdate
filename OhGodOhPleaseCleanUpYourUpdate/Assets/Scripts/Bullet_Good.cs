@@ -1,11 +1,11 @@
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public class Bullet_Good : MonoBehaviour
 {
     [SerializeField]
     private CircleCollider2D Collider;
 
-    private Player player;
+    private Player_Good player;
 
     private Vector3 MovementVector;
 
@@ -18,7 +18,7 @@ public class Bullet : MonoBehaviour
     private string BlockTag = "Blocker";
 
     private bool HasCollided = false;
-    public void SetUpBullet(Player playerRef, Vector3 ShootVector)
+    public void SetUpBullet(Player_Good playerRef, Vector3 ShootVector)
     {
         player = playerRef;
         MovementVector = ShootVector;

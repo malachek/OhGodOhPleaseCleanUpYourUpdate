@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIManager : MonoBehaviour
+public class UIManager_Good : MonoBehaviour
 {
     [SerializeField]
     private Slider AmmoSlider;
@@ -17,11 +17,11 @@ public class UIManager : MonoBehaviour
 
     private int BlockedShots = 0;
 
-    Player player;
+    Player_Good player;
 
     private void Awake()
     {
-        player = FindFirstObjectByType<Player>();
+        player = FindFirstObjectByType<Player_Good>();
 
         //Subscribes to event for ammo
         player.OnPlayerShoot += UpdateAmmoCount;
@@ -44,7 +44,7 @@ public class UIManager : MonoBehaviour
         //Unsubscribes to event for ammo
         player.OnPlayerShoot -= UpdateAmmoCount;
         //Unsubcribes to event for kill
-        player.OnBulletHitOrBlock += DetermineCountIncrease;
+        player.OnBulletHitOrBlock -= DetermineCountIncrease;
     }
 
     private void UpdateAmmoCount(float AmmoPercent)

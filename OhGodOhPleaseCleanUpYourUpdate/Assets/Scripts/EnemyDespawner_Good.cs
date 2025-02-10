@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using UnityEngine;
 
-public class EnemyDespawner : MonoBehaviour
+public class EnemyDespawner_Good : MonoBehaviour
 {
     [SerializeField]
     private BoxCollider2D BoxCollider2D;
